@@ -1,6 +1,5 @@
 Online_store for Java exam 
 
-задача 
 Архитектура: Микросервисы
 Online market 
 авторизация через spring boot auth 2.0
@@ -59,6 +58,7 @@ Architecture
 
 3. Технологии для реализации
 
+	•	Java 21
 	•	Spring Boot: для создания каждого микросервиса.
 	•	Spring Cloud: для взаимодействия между сервисами, реализации Service Registry (Eureka) и API Gateway (Spring Cloud Gateway).
 	•	Spring Security: для управления авторизацией и аутентификацией (OAuth 2.0, JWT).
