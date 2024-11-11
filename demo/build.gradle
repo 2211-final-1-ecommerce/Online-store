@@ -9,7 +9,11 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
+<<<<<<< HEAD
 		languageVersion = JavaLanguageVersion.of(21)
+=======
+		languageVersion = JavaLanguageVersion.of(17)
+>>>>>>> d249c9c3137aee656f9dcc374399e1463ccc7c36
 	}
 }
 
