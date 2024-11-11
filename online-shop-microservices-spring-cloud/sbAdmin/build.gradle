@@ -1,0 +1,37 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.0'
+	id 'io.spring.dependency-management' version '1.1.5'
+	id 'com.bmuschko.docker-spring-boot-application' version '9.4.0'
+}
+
+group = 'xyz.defe.sp'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'de.codecentric:spring-boot-admin-starter-server:3.1.8'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.1.2'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+docker {
+	def registryUrl = 'localhost:5000'
+	springBootApplication {
+		baseImage = 'eclipse-temurin:22-jre-alpine'
+		ports = [11000]
+		images = ["${registryUrl}/sp-admin:0.0.1"]
+
+		// Podman rootless service,comment out this line when use Docker
+		url = 'unix:///run/user/1000/podman/podman.sock'
+	}
+}

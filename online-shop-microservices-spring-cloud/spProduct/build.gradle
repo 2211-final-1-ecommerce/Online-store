@@ -1,0 +1,64 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.0'
+	id 'io.spring.dependency-management' version '1.1.5'
+	id 'com.bmuschko.docker-spring-boot-application' version '9.4.0'
+}
+
+group = 'xyz.defe.sp'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+ext {
+	set('springCloudVersion', "2023.0.2")
+}
+
+dependencies {
+	implementation fileTree(include: ["spCommon-0.0.1-SNAPSHOT.jar"], dir: "../spCommon/build/libs")
+
+	implementation 'com.google.code.gson:gson:+'
+	implementation 'org.postgresql:postgresql:42.7.3'
+	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+	implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+	implementation 'org.redisson:redisson-spring-boot-starter:3.31.0'
+
+	implementation 'org.springframework.data:spring-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
+
+//test.enabled = false
+
+docker {
+	def registryUrl = 'localhost:5000'
+	springBootApplication {
+		baseImage = 'eclipse-temurin:22-jre-alpine'
+		ports = [9100]
+		images = ["${registryUrl}/sp-product:0.0.1"]
+
+		// Podman rootless service,comment out this line when use Docker
+		url = 'unix:///run/user/1000/podman/podman.sock'
+	}
+}

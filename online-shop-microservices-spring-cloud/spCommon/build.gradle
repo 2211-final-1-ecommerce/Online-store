@@ -1,0 +1,37 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.0'
+	id 'io.spring.dependency-management' version '1.1.5'
+	id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
+group = 'xyz.defe.sp'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+	implementation 'com.auth0:java-jwt:4.4.0'
+	implementation 'com.google.code.gson:gson:+'
+	implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+	implementation 'org.springframework.data:spring-data-redis'
+	compileOnly 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.2'
+}
+
+shadowJar {
+	dependencies {
+		include(dependency('com.auth0:java-jwt:4.4.0'))
+	}
+	archiveFileName = "${project.name}-${version}.jar"
+}
+
+jar.enabled = false
+bootJar.enabled = false
+
+build.finalizedBy(shadowJar)
