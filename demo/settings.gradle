@@ -1,6 +1,1 @@
 rootProject.name = 'demo'
-<<<<<<< HEAD
-include 'auth-service'
-
-=======
->>>>>>> d249c9c3137aee656f9dcc374399e1463ccc7c36
